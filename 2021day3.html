@@ -1,0 +1,60 @@
+
+<script>
+
+// transpose a two dimensional array which has a fixed width
+function transpose(matrix) {
+	return matrix[0].map((col, c) => matrix.map((row, r) => matrix[r][c]))
+}
+
+// parse = string[] => char[][]
+function parse(array) {
+	return array.map(r => r.split('').map(c => Number(c)))
+}
+
+// count how many times each unique value occurs
+function count(array){
+	return array.reduce((acc, curr) => {
+		acc[curr] ? ++acc[curr] : acc[curr] = 1
+		return acc
+	}, {})
+} 
+
+// find the key with the highest value
+function mostCommon(array) {
+	return array.reduce(([pKey, pVal], [cKey, cVal]) => pVal > cVal ? pKey : cKey)		
+}
+
+function inverse(binary) {
+	return binary.map(b => b === '0' ? '1' : '0')
+}
+
+function binary(charArray) {
+	return parseInt(charArray.join(''), 2)
+}
+
+function calculateGammaRate(report) {
+	return transpose(report)
+			.map(count) 
+			.map(Object.entries) 
+			.map(mostCommon)
+}
+
+const diagnosticReport = parse(['00100'
+                              , '11110'
+                              , '10110'
+                              , '10111'
+                              , '10101'
+                              , '01111'
+                              , '00111'
+                              , '11100'
+                              , '10000'
+                              , '11001'
+                              , '00010'
+                              , '01010'])
+
+const gammaRate = calculateGammaRate(diagnosticReport)
+const epsilonRate = inverse(gammaRate)
+
+console.log(binary(gammaRate) * binary(epsilonRate))
+
+</script>
